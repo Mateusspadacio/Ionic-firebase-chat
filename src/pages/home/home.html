@@ -1,0 +1,52 @@
+<ion-header>
+  <custom-header [title]="view"></custom-header>
+
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="view">
+      <ion-segment-button value="chats">
+        Chats
+      </ion-segment-button>
+      <ion-segment-button value="users">
+        Users
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-searchbar (ionInput)="filterItems($event)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <div [ngSwitch]="view">
+    <ion-note *ngIf="warningMessage.length != 0">
+      <h2 text-center>{{warningMessage}}</h2>
+    </ion-note>
+    <ion-list *ngSwitchCase="'users'" no-lines>
+      <button ion-item *ngFor="let user of users | async" (click)="onChatCreate(user)">
+        <ion-avatar item-left>
+          <img [src]="user.photo || 'assets/imgs/no-photo.jpg'">
+        </ion-avatar>
+        {{user.name}}
+      </button>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'chats'" no-lines>
+      <button ion-item *ngFor="let chat of chats | async" (click)="onChatOpen(chat)">
+        <ion-avatar item-left>
+          <img [src]="chat.photo || 'assets/imgs/no-photo.jpg'">
+        </ion-avatar>
+        <h2>{{chat.title}}</h2>
+        <ion-note *ngIf="chat.lastMessage; else noMessages">
+          {{chat.timestamp | date:'dd/MM/yyyy HH:mm'}} - <span [innerHTML]="chat.lastMessage | shortDescription:10"></span>
+        </ion-note>
+        <ng-template #noMessages>
+          <ion-note>
+            No messages
+          </ion-note>
+        </ng-template>
+      </button>
+    </ion-list>
+  </div>
+</ion-content>

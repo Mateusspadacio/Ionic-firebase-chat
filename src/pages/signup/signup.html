@@ -1,0 +1,60 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Sign Up</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-row justify-content-center>
+    <ion-avatar class="fab-custom">
+      <ion-fab bottom right>
+        <button ion-fab mini icon-only (click)="openGallery()">
+          <ion-icon name="camera"></ion-icon>
+        </button>
+      </ion-fab>
+      <img class="circle" [src]="userPhotoPath || 'assets/imgs/no-photo.jpg'">
+    </ion-avatar>
+  </ion-row>
+
+  <form [formGroup]="signupForm" (ngSubmit)="signUp(); $event.preventDefault()">
+    <ion-item>
+      <ion-icon name="person" item-left></ion-icon>
+      <ion-input type="text" placeholder="Name" formControlName="name"></ion-input>
+    </ion-item>
+    <p class="danger" *ngIf="signupForm.controls?.name.dirty && signupForm?.controls.name.errors" margin-left>
+      Invalid Name, It must contains at least 3 characters
+    </p>
+
+    <ion-item>
+      <ion-icon name="at" item-left></ion-icon>
+      <ion-input type="text" placeholder="Username" formControlName="username"></ion-input>
+    </ion-item>
+    <p class="danger" *ngIf="signupForm.controls?.username.dirty && signupForm?.controls.username.errors" margin-left>
+      Invalid Username, It must contains at least 3 characters
+    </p>
+
+    <ion-item>
+      <ion-icon name="mail" item-left></ion-icon>
+      <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+    </ion-item>
+    <p class="danger" *ngIf="signupForm?.controls.email.dirty && signupForm?.controls.email.errors" margin-left>
+      Invalid Email
+    </p>
+
+    <ion-item>
+      <ion-icon name="lock" item-left></ion-icon>
+      <ion-input type="password" placeholder="password" formControlName="password"></ion-input>
+    </ion-item>
+    <p class="danger" *ngIf="signupForm?.controls.password.dirty && signupForm?.controls.password.errors" margin-left>
+      Invalid password, It must contains between 6 and 25 characters
+    </p>
+
+    <input #inputImage class="hide-input" type="file" accept="image/*" (change)="onInputPhoto($event)">
+    <br>
+    <button ion-button block type="submit" [disabled]="signupForm?.invalid">Create</button>
+  </form>
+</ion-content>

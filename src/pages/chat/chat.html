@@ -1,0 +1,59 @@
+<ion-header>
+
+  <custom-header [title]="recipient?.name || ''" [user]="recipient"></custom-header>
+
+</ion-header>
+
+
+<ion-content>
+  <button ion-button block clear (click)="onLoading()" *ngIf="messagesLength > (offSet - 1)">
+    <ion-spinner *ngIf="isLoading; else loading"></ion-spinner>
+    <ng-template #loading>Loading</ng-template>
+  </button>
+  <div padding>
+    <message-box [id]="message?.key" *ngFor="let message of viewMessages | async" [message]="message" [isFromSender]="(message.userId == sender.key)"></message-box>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-8>
+          <input-message #inputMsg [smile]="smile"></input-message>
+          <!--<ion-input type="text" (keyup.enter)="sendMessage(message); message=''" placeholder="Message..." [(ngModel)]="message"></ion-input>-->
+        </ion-col>
+        <ion-buttons end>
+          <button ion-button icon-only clear (click)="openSmiles($event)">
+            <ion-icon name="happy" isActive="false"></ion-icon>
+          </button>
+          <button color="dark" ion-button icon-only clear (click)="openInput()">
+            <ion-icon name="attach" isActive="false"></ion-icon>
+          </button>
+          <button color="secondary" ion-button icon-only clear (click)="sendMessage();">
+            <ion-icon name="send" isActive="false"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+  <ion-toolbar>
+    <div *ngIf="files.length > 0; else noAttachment" class="list-size">
+      <ion-list>
+        <ion-item *ngFor="let file of files">
+          <button ion-button clear item-left (click)="removeFile(file)">
+            <ion-icon name="close"></ion-icon>
+          </button>
+          {{file.name}}
+        </ion-item>
+      </ion-list>
+    </div>
+    <ng-template #noAttachment>
+      <ion-note>
+        <p text-center>No files attach</p>
+      </ion-note>
+    </ng-template>
+  </ion-toolbar>
+</ion-footer>
+
+<input #inputFile class="hide-input" type="file" (change)="onAttachment($event)">

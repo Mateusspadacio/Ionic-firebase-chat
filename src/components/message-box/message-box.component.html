@@ -1,0 +1,10 @@
+<div class="text" [ngClass]="{'sender-background': isFromSender}" [ngStyle]="{'max-width': width}">
+  <p [innerHTML]="message.text"></p>
+  <p class="timestamp">{{message.timestamp | date:'dd/MM/yyyy HH:mm'}}</p>
+  <ion-card *ngFor="let attach of message.attachment">
+    <ion-icon [color]="attach | nameFileUrl | showIcon:true" item-left [name]="attach | nameFileUrl | showIcon"></ion-icon>
+    <a [href]="attach">
+      {{ attach | nameFileUrl | shortDescription }}
+    </a>
+  </ion-card>
+</div>

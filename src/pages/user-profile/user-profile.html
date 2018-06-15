@@ -1,0 +1,53 @@
+<ion-header>
+
+    <custom-header [title]="'User Profile'"></custom-header>
+
+</ion-header>
+
+
+<ion-content padding>
+  <user-info [user]="currentUser"></user-info>
+
+  <button ion-button block (click)="canEdit = !canEdit">Edit</button>
+
+  <form (ngSubmit)="onSubmit(); $event.preventDefault()" *ngIf="canEdit" #profileForm="ngForm">
+
+    <ion-item>
+      <ion-icon name="person" item-left></ion-icon>
+      <ion-input type="text"
+      placeholder="name"
+      name="name"
+      [(ngModel)]="currentUser.name"
+      required
+      minlength="3">
+    </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="at" item-left></ion-icon>
+      <ion-input
+      type="text"
+      placeholder="username"
+      name="username"
+      [(ngModel)]="currentUser.username"
+      required
+      minlength="3">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="image" item-left></ion-icon>
+      <button ion-item block small clear no-lines flex-start type="button" (click)="onOpenFileChooser()">
+        {{filePhoto?.name || 'Choose image'}}
+      </button>
+    </ion-item>
+
+    <progress-bar *ngIf="uploadProgress" [progress]="uploadProgress"></progress-bar>
+
+    <button ion-button block type="submit" [disabled]="profileForm.form.invalid">
+      Save
+    </button>
+  </form>
+</ion-content>
+
+<input #inputPhoto class="hide-input" type="file" accept="image/*" (change)="onPhoto($event)">

@@ -1,0 +1,14 @@
+page-chat {
+
+  ion-input:first-child {
+    background: white;
+    border-radius: 5px 5px;
+    border: 1px solid gray;
+  }
+
+  .list-size {
+    height: 50px;
+    overflow-y: auto;
+  }
+
+}
